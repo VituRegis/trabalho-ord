@@ -1,5 +1,5 @@
 ### TRATA OS DADOS PARA NÃO
-dados = open('dados.dat', 'r').read(-1)
+dados = open('trabalho-ord/dados.dat', 'r').read(-1)
 separado = dados[4:-1].split('|')
 registros = []
 registroAtual = []
@@ -27,28 +27,38 @@ for i , campo in enumerate(separado):
     else: 
         registroAtual.append(campo)
 
-for registro in registros:
-    print(registro)
+#for registro in registros:
+   # print(registro)
 
-'''
 def buscaJogo(identificador):
+    achou = False
+    for jogos in registros:
+        if jogos[0] == identificador:
+            print(f'Jogo encontrado: {jogos[2]}')
+            achou = True
+            break
+
+    if achou == False:
+        print(f'Jogo com identificador [{identificador}] não encontrado!')
+
 
 def insereJogo(registro):
+    print('insereJogo')
 
 def removeJogo(identificador):
+    print('removeJogo')
 
-operacoes = open('arquivo_operacoes', 'r').readlines(-1)
+operacoes = open('trabalho-ord/arquivo_operacoes', 'r').readlines(-1)
 
 for operacao in operacoes:
-    registro = operacao[2:-1]
+    parametros = operacao[2:-1]
 
     if operacao[0].lower() == 'b':
-        buscaJogo(registro)
+        buscaJogo(parametros)
 
     if operacao[0].lower() == 'i':
-        insereJogo(registro)
+        insereJogo(parametros)
 
     if operacao[0].lower() == 'r':
-        removeJogo(registro)
+        removeJogo(parametros)
     
-'''
