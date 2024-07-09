@@ -34,16 +34,16 @@ def buscaJogo(identificador):
     achou = False
     for jogos in registros:
         if jogos[0] == identificador:
-            print(f'Jogo encontrado: {jogos[2]}')
+            print(f'Registro encontrado: {jogos} ({len(((str(jogos[1:]))))- 24} bytes)')
             achou = True
             break
 
     if achou == False:
-        print(f'Jogo com identificador [{identificador}] não encontrado!')
+        print(f'Registro com identificador [{identificador}] não encontrado!')
 
 
 def insereJogo(registro):
-    print('insereJogo')
+    print(registro)
 
 def removeJogo(identificador):
     print('removeJogo')
