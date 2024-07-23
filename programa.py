@@ -1,64 +1,47 @@
-### TRATA OS DADOS PARA NÃO
-dados = open('trabalho-ord/dados.dat', 'r').read(-1)
-separado = dados[4:-1].split('|')
-registros = []
-registroAtual = []
+import argparse
+import busca
+import remove
 
-
-### ORGANIZA OS DADOS EM TUPLAS
-for i , campo in enumerate(separado):
-    campo = str(campo)
-    if i % 6 == 0 or i == 599:
-        if i != 0 or i == 599:
-            registros.append(tuple(registroAtual))
-
-        # ID ESTAVA CORROMPIDO RESOLVI ASSIM:
-        if i >= 5994:
-            registroAtual = [campo[-4:]]
-        elif i >= 594:
-            registroAtual = [campo[-3:]]
-        elif i >= 54:
-            registroAtual = [campo[-2:]]
-        elif i >= 0:
-            registroAtual = [campo[-1:]]
-
-        registroAtual.append(campo)
-        
-    else: 
-        registroAtual.append(campo)
-
-#for registro in registros:
-   # print(registro)
+def imrpimeLED():
+    print('imrpimeLED')
 
 def buscaJogo(identificador):
-    achou = False
-    for jogos in registros:
-        if jogos[0] == identificador:
-            print(f'Registro encontrado: {jogos} ({len(((str(jogos[1:]))))- 24} bytes)')
-            achou = True
-            break
-
-    if achou == False:
-        print(f'Registro com identificador [{identificador}] não encontrado!')
-
+    busca.busca(identificador)
 
 def insereJogo(registro):
-    print(registro)
+    print('\n', registro)
 
 def removeJogo(identificador):
-    print('removeJogo')
+    remove.remove(identificador)
 
-operacoes = open('trabalho-ord/arquivo_operacoes', 'r').readlines(-1)
 
-for operacao in operacoes:
-    parametros = operacao[2:-1]
+# Configura o argparse para ler os argumentos da linha de comando
+parser = argparse.ArgumentParser(description='Arquivo principal.')
 
-    if operacao[0].lower() == 'b':
-        buscaJogo(parametros)
+parser.add_argument('-e', dest='arquivo_operacoes', help='Arquivo de operações')
+parser.add_argument('-p', action='store_true', help='Executa a função comeCoco')
 
-    if operacao[0].lower() == 'i':
-        insereJogo(parametros)
+args = parser.parse_args()
 
-    if operacao[0].lower() == 'r':
-        removeJogo(parametros)
-    
+# Verifica se o argumento -p foi passado e imprime a LED
+if args.p:
+    imrpimeLED()
+elif args.arquivo_operacoes:
+    # Abre e lê o arquivo de operações passado como argumento -e
+
+    with open(args.arquivo_operacoes, 'r') as file:
+        operacoes = file.readlines()
+
+    for operacao in operacoes:
+        parametros = operacao[2:-1]
+
+        if operacao[0].lower() == 'b':
+            buscaJogo(parametros)
+
+        if operacao[0].lower() == 'i':
+            insereJogo(parametros)
+
+        if operacao[0].lower() == 'r':
+            removeJogo(parametros)
+else:
+    print("\n Nenhum argumento válido foi passado.\n Use 'python programa.py -e arquivo_operacoes' para rodar o arquivo de operações ou 'python programa.py -p' para imprimir a LED.\n")
