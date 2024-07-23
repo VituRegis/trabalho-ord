@@ -7,7 +7,7 @@ def insereNaLED(offset, tamanho):
     ...
 
 def remove(ID_REMOCAO):
-    with open('dados.dat','br') as arquivo_dados:
+    with open('dados copy.dat','br+') as arquivo_dados:
         print(f'\n\nRemoção do registro de chave "{ID_REMOCAO}"')
 
         TAMANHO_ARQ = arquivo_dados.seek(0, os.SEEK_END)
@@ -20,26 +20,33 @@ def remove(ID_REMOCAO):
         while naoAchou == True:
             iterador += 1
             
+            # Pega a posicao do tamanho do registro
+            posicao_tamanho_registro = arquivo_dados.tell()
+
             # Pega o tamanho do Registro
             TOTALREG = arquivo_dados.read(TAMANHO_TAMREGISTRO)
 
             # Pega a posicao inicial do registro antes de ler o ID
             posicao_inicio = arquivo_dados.tell()
 
+            # Pega o registro inteiro, depois cria uma lista separando campos
             registro = arquivo_dados.read(int.from_bytes(TOTALREG)).decode('utf-8')
             registro_em_lista = registro.split('|')
 
             if registro_em_lista[0] == ID_REMOCAO:
-                print(f'Registro removido! ({int.from_bytes(TOTALREG)} bytes)')
-                print(f'Local: offset = {posicao_inicio} bytes ({TOTALREG})')
+                arquivo_dados.seek(posicao_inicio, os.SEEK_SET)
+                
+                arquivo_dados.write('*'.encode('utf-8'))
 
-                insereNaLED(posicao_inicio, int.from_bytes(TOTALREG))
+                print(f'Registro removido! ({int.from_bytes(TOTALREG)} bytes)')
+                print(f'Local: offset = {posicao_tamanho_registro} bytes ({hex(posicao_tamanho_registro)})')
+
+                insereNaLED(posicao_tamanho_registro.to_bytes(4), int.from_bytes(TOTALREG))
 
                 naoAchou = False
 
             # Pula para o próximo registro (set na posição onde fica o tamanho do registro anterior e depois pula o valor em bytes)
             arquivo_dados.seek(posicao_inicio, os.SEEK_SET)
-
             arquivo_dados.seek(int.from_bytes(TOTALREG), os.SEEK_CUR)
             #print(f'Posição do seek depois de pular o registro {arquivo_dados.tell()}')
 
