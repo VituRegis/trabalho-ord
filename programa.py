@@ -1,6 +1,7 @@
 import argparse
 import busca
 import remove
+import insere
 
 def imrpimeLED():
     print('imrpimeLED')
@@ -9,7 +10,7 @@ def buscaJogo(identificador):
     busca.busca(identificador)
 
 def insereJogo(registro):
-    print('\n', registro)
+    insere.insere(registro)
 
 def removeJogo(identificador):
     remove.remove(identificador)
