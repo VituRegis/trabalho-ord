@@ -2,9 +2,10 @@ import argparse
 import busca
 import remove
 import insere
+import imprime
 
-def imrpimeLED():
-    print('imrpimeLED')
+def imprimeLED():
+    imprime.imprime()
 
 def buscaJogo(identificador):
     busca.busca(identificador)
@@ -26,23 +27,32 @@ args = parser.parse_args()
 
 # Verifica se o argumento -p foi passado e imprime a LED
 if args.p:
-    imrpimeLED()
+    imprimeLED()
 elif args.arquivo_operacoes:
     # Abre e lê o arquivo de operações passado como argumento -e
+    try:
+        with open(args.arquivo_operacoes, 'r') as file:
+            operacoes = file.readlines()
 
-    with open(args.arquivo_operacoes, 'r') as file:
-        operacoes = file.readlines()
+            for operacao in operacoes:
+                parametros = operacao[2:-1]
 
-    for operacao in operacoes:
-        parametros = operacao[2:-1]
+                if operacao[0].lower() == 'b':
+                    buscaJogo(parametros)
 
-        if operacao[0].lower() == 'b':
-            buscaJogo(parametros)
+                elif operacao[0].lower() == 'i':
+                    insereJogo(parametros)
 
-        if operacao[0].lower() == 'i':
-            insereJogo(parametros)
-
-        if operacao[0].lower() == 'r':
-            removeJogo(parametros)
+                elif operacao[0].lower() == 'r':
+                    removeJogo(parametros)
+                else:
+                    print(f"Operação desconhecida: {operacao[0]}")
+    except FileNotFoundError:
+        print(f"Arquivo {args.arquivo_operacoes} não encontrado.")
 else:
     print("\n Nenhum argumento válido foi passado.\n Use 'python programa.py -e arquivo_operacoes' para rodar o arquivo de operações ou 'python programa.py -p' para imprimir a LED.\n")
+
+busca.arquivo_dados.close()
+insere.arquivo_dados.close()
+remove.arquivo_dados.close()
+imprime.arquivo_dados.close()

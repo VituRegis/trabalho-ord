@@ -3,9 +3,12 @@ import os
 TAMANHO_CABECALHO = 4
 TAMANHO_TAMREGISTRO = 2
 
+arquivo_dados = open('dados copy.dat','br+')
+
 def busca(ID_BUSCA):
-    with open('dados.dat','br') as arquivo_dados:
-        print(f'\n\nBusca pelo registro de chave "{ID_BUSCA}"')
+        id_busca_str = str(ID_BUSCA)
+
+        print(f'\n\nBusca pelo registro de chave "{id_busca_str}"')
 
         TAMANHO_ARQ = arquivo_dados.seek(0, os.SEEK_END)
         
@@ -24,11 +27,13 @@ def busca(ID_BUSCA):
             posicao_inicio = arquivo_dados.tell()
             
             registro_bytes = arquivo_dados.read(int.from_bytes(TOTALREG))
+
+            print(registro_bytes)
             try:
                 registro = registro_bytes.decode('utf-8')
                 registro_em_lista = registro.split('|')
 
-                if registro_em_lista[0] == ID_BUSCA:
+                if registro_em_lista[0] == id_busca_str:
                     print(registro, f' ({int.from_bytes(TOTALREG)} bytes)')
                     naoAchou = False
                     break
@@ -43,5 +48,4 @@ def busca(ID_BUSCA):
             if arquivo_dados.tell() >= TAMANHO_ARQ:
                 print('Erro: registro não encontrado!')
                 naoAchou = False
-
 

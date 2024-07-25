@@ -23,7 +23,9 @@ def insereNoCabecalho(offset, offset_inteiro):
         arquivo_dados.write(cabecalho)
 
 def remove(ID_REMOCAO):
-    print(f'\n\nRemoção do registro de chave "{ID_REMOCAO}"')
+    id_remocao_str = str(ID_REMOCAO)
+
+    print(f'\n\nRemoção do registro de chave "{id_remocao_str}"')
     TAMANHO_ARQ = arquivo_dados.seek(0, os.SEEK_END)
     
     arquivo_dados.seek(TAMANHO_CABECALHO, os.SEEK_SET)
@@ -52,7 +54,7 @@ def remove(ID_REMOCAO):
 
             registro_em_lista = registro.split('|')
         
-            if registro_em_lista[0] == ID_REMOCAO:
+            if registro_em_lista[0] == id_remocao_str:
                 arquivo_dados.seek(posicao_inicio, os.SEEK_SET)
                 
                 arquivo_dados.write('*|'.encode('utf-8'))
@@ -71,7 +73,3 @@ def remove(ID_REMOCAO):
         if arquivo_dados.tell() >= TAMANHO_ARQ:
             print('Erro: registro não encontrado!')
             naoAchou = False
-
-remove('94')
-
-arquivo_dados.close()
