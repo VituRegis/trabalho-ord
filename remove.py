@@ -3,7 +3,7 @@ import os
 TAMANHO_CABECALHO = 4
 TAMANHO_TAMREGISTRO = 2
 
-arquivo_dados = open('dados copy.dat','br+')
+arquivo_dados = open('dados.dat','br+')
 
 def insereNoCabecalho(offset, offset_inteiro):
     arquivo_dados.seek(0, os.SEEK_SET)
@@ -11,7 +11,7 @@ def insereNoCabecalho(offset, offset_inteiro):
     cabecalho_inteiro = int.from_bytes(cabecalho)
 
     # Cabecalho inicial só remove o anterior substituindo pelo atual
-    if cabecalho_inteiro == 4294967295: # esse numero é o cabecalho inicial da LED
+    if cabecalho_inteiro == 4294967295 or 0: # esse numero é o cabecalho inicial da LED
         arquivo_dados.seek(0, os.SEEK_SET)
         arquivo_dados.write(offset)
     else:

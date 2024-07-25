@@ -1,6 +1,6 @@
 import os
 
-arquivo_dados = open('dados copy.dat','br+')
+arquivo_dados = open('dados.dat','br+')
 
 def imprime():
     lista_registros_tam = []
@@ -8,8 +8,6 @@ def imprime():
     arquivo_dados.seek(0, os.SEEK_SET)
     cabeca_led_bytes = arquivo_dados.read(4)
     cabeca_led_inteiro = int.from_bytes(cabeca_led_bytes)
-    
-    arquivo_dados.seek(cabeca_led_inteiro, os.SEEK_SET)
     
     arquivo_dados.seek(cabeca_led_inteiro, os.SEEK_SET)
     tam_disponivel = int.from_bytes(arquivo_dados.read(2))
@@ -35,4 +33,7 @@ def imprime():
     for loc, tam  in lista_registros_tam:
         if tam != 0:
             print(f'[offset: {loc}, tam: {tam}] ->', end=' ')
+
+    
+    print('[FIM]')
         

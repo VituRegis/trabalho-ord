@@ -3,7 +3,7 @@ import os
 TAMANHO_CABECALHO = 4
 TAMANHO_TAMREGISTRO = 2
 
-arquivo_dados = open('dados copy.dat','br+')
+arquivo_dados = open('dados.dat','br+')
 
 def busca(ID_BUSCA):
         id_busca_str = str(ID_BUSCA)
@@ -28,7 +28,6 @@ def busca(ID_BUSCA):
             
             registro_bytes = arquivo_dados.read(int.from_bytes(TOTALREG))
 
-            print(registro_bytes)
             try:
                 registro = registro_bytes.decode('utf-8')
                 registro_em_lista = registro.split('|')
@@ -48,4 +47,3 @@ def busca(ID_BUSCA):
             if arquivo_dados.tell() >= TAMANHO_ARQ:
                 print('Erro: registro não encontrado!')
                 naoAchou = False
-

@@ -1,6 +1,6 @@
 import os
 
-with open('dados copy.dat','rb+') as arq:
+with open('dados.dat','rb+') as arq:
     arq.seek(0, os.SEEK_SET)
     cabeca_led_bytes = arq.read(4)
     cabeca_led_inteiro = int.from_bytes(cabeca_led_bytes)
